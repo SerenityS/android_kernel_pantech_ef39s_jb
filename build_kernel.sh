@@ -16,7 +16,6 @@ export ARCH=arm
 #export PATH=$(pwd)/toolchain/arm-eabi-4.6/bin:$PATH
 export PATH=~/temasek/system/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin:$PATH
 export CROSS_COMPILE=~/temasek/system/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin/arm-eabi-
-
 ##############################################################################
 # make zImage
 ##############################################################################
