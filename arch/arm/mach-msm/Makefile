@@ -399,7 +399,15 @@ obj-$(CONFIG_MSM_VP_REGULATOR) += msm_vp.o
 ifdef CONFIG_MSM_CPR
 obj-$(CONFIG_DEBUG_FS) += msm_cpr-debug.o
 endif
+<<<<<<< HEAD
 
 obj-$(CONFIG_PANTECH_RESET_REASON) += sky_sys_reset.o
 obj-$(CONFIG_PANTECH_ERR_CRASH_LOGGING) += pantech_restart.o pantech_apanic.o
 obj-$(CONFIG_PANTECH_DEBUG) += pantech_debug.o
+=======
+obj-$(CONFIG_MSM_CPU_PWRCTL) +=  msm_cpu_pwrctl.o
+obj-$(CONFIG_FORCE_FAST_CHARGE) += fastchg.o
+#
+obj-$(CONFIG_INTELLI_PLUG) += intelli_plug.o
+obj-$(CONFIG_MSM_CPUFREQ_LIMITER) += cpufreq_limit.o
+>>>>>>> 73bb849... CPU Freq Limiter added
