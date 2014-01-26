@@ -32,10 +32,6 @@
 #define DEFAULT_RQ_POLL_JIFFIES 1
 #define DEFAULT_DEF_TIMER_JIFFIES 5
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
 struct notifier_block freq_transition;
 struct notifier_block cpu_hotplug;
 
@@ -220,8 +216,6 @@ unsigned int get_rq_info(void)
 EXPORT_SYMBOL(get_rq_info);
 //#endif
 
->>>>>>> b593d0f... CPUQUIET added
->>>>>>> parent of e128aef... S2W & DT2W
 static void def_work_fn(struct work_struct *work)
 {
 	int64_t diff;

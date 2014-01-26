@@ -974,30 +974,8 @@ config TOUCHSCREEN_QT602240
 	help
 	  Say Y here if you have the AT42QT602240/ATMXT224 I2C touchscreen
 	  connected to your system.
-<<<<<<< HEAD
           If unsure, say N.
 	  To compile this driver as a module, choose M here: the
 	  module will be called qt602240_ts.
 
-config TOUCHSCREEN_SWEEP2WAKE
-	tristate "Sweep2Wake for touchscreens"
-	select TOUCHSCREEN_PREVENT_SLEEP
-	default n
-
-config TOUCHSCREEN_DOUBLETAP2WAKE
-	tristate "DoubleTap2Wake for touchscreens"
-	select TOUCHSCREEN_PREVENT_SLEEP
-	default n
-
-config TOUCHSCREEN_PREVENT_SLEEP
-	bool "Inihibit sleep on modified touchscreen drivers"
-	default n
-	help
-	  This disables the sleep function of modified touchscreen drivers.
-=======
-
-	  If unsure, say N.
-	  To compile this driver as a module, choose M here: the
-	  module will be called qt602240_ts.
->>>>>>> parent of e128aef... S2W & DT2W
 endif
