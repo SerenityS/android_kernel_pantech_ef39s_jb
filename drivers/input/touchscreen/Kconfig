@@ -974,9 +974,7 @@ config TOUCHSCREEN_QT602240
 	help
 	  Say Y here if you have the AT42QT602240/ATMXT224 I2C touchscreen
 	  connected to your system.
-
-endif
-	  If unsure, say N.
+          If unsure, say N.
 	  To compile this driver as a module, choose M here: the
 	  module will be called qt602240_ts.
 

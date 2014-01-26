@@ -153,12 +153,10 @@ struct qt602240_data_t
 #ifdef PANTECH_MHL_TOUCH_EVENT
 	struct work_struct work_mhl_touch_event;
 #endif
-};
-struct qt602240_data_t *qt602240_data 
-{
+
 #ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
 #if defined(CONFIG_TOUCHSCREEN_SWEEP2WAKE) || defined(CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE)
-  bool prevent_sleep = false;
+  bool prevent_sleep = (false);
 #endif
 #if defined(CONFIG_TOUCHSCREEN_SWEEP2WAKE)
   prevent_sleep = (s2w_switch > 0) && (s2w_s2sonly == 0);
@@ -168,6 +166,8 @@ struct qt602240_data_t *qt602240_data
 #endif
 #endif
 };
+struct qt602240_data_t *qt602240_data;
+
 /* -------------------------------------------------------------------- */
 /* function proto type & variable for attribute				*/
 /* -------------------------------------------------------------------- */

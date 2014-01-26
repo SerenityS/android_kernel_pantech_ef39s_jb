@@ -915,7 +915,7 @@ static inline struct cpuacct *parent_ca(struct cpuacct *ca)
 
 extern void cpuacct_charge(struct task_struct *tsk, u64 cputime);
 #else
-static inline void cpuacct_charge(struct task_struct *tsk, u64 cputime) {}
+static inline void cpuacct_charge(struct task_struct *tsk, u64 cputime)
 #endif
 
 #define NR_AVE_PERIOD_EXP      27
@@ -942,7 +942,6 @@ static inline unsigned int do_avg_nr_running(struct rq *rq)
 
 static inline void inc_nr_running(struct rq *rq)
 {
-	sched_update_nr_prod(cpu_of(rq), rq->nr_running, true);
 	write_seqcount_begin(&rq->ave_seqcnt);
 	rq->ave_nr_running = do_avg_nr_running(rq);
 	rq->nr_last_stamp = rq->clock_task;
@@ -952,7 +951,6 @@ static inline void inc_nr_running(struct rq *rq)
 
 static inline void dec_nr_running(struct rq *rq)
 {
-	sched_update_nr_prod(cpu_of(rq), rq->nr_running, false);
 	write_seqcount_begin(&rq->ave_seqcnt);
 	rq->ave_nr_running = do_avg_nr_running(rq);
 	rq->nr_last_stamp = rq->clock_task;
