@@ -6,7 +6,7 @@
 /* GPIO, VREG & resolution */
 /* -------------------------------------------------------------------- */
 #ifdef QT_MULTITOUCH_ENABLE
-#define MAX_NUM_FINGER	5
+#define MAX_NUM_FINGER	10
 #else
 #define MAX_NUM_FINGER	1
 #endif

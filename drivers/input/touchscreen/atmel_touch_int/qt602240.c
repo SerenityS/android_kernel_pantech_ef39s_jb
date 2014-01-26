@@ -46,6 +46,14 @@
 #else
 #include "qt602240_cfg.h"
 #endif
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
+#ifdef CONFIG_TOUCHSCREEN_SWEEP2WAKE
+#include <linux/input/sweep2wake.h>
+#endif
+#ifdef CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE
+#include <linux/input/doubletap2wake.h>
+#endif
+#endif
 
 /* -------------------------------------------------------------------- */
 /* debug option */
@@ -146,9 +154,20 @@ struct qt602240_data_t
 	struct work_struct work_mhl_touch_event;
 #endif
 };
-struct qt602240_data_t *qt602240_data = NULL;
-
-
+struct qt602240_data_t *qt602240_data 
+{
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
+#if defined(CONFIG_TOUCHSCREEN_SWEEP2WAKE) || defined(CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE)
+  bool prevent_sleep = false;
+#endif
+#if defined(CONFIG_TOUCHSCREEN_SWEEP2WAKE)
+  prevent_sleep = (s2w_switch > 0) && (s2w_s2sonly == 0);
+#endif
+#if defined(CONFIG_TOUCHSCREEN_DOUBLETAP2WAKE)
+  prevent_sleep = prevent_sleep || (dt2w_switch > 0);
+#endif
+#endif
+};
 /* -------------------------------------------------------------------- */
 /* function proto type & variable for attribute				*/
 /* -------------------------------------------------------------------- */
@@ -4058,6 +4077,13 @@ static int qt602240_remove(struct i2c_client *client)
 #ifdef ANTI_TOUCH_HOLE
 	cancel_delayed_work_sync(&qt602240_data->work_anti_touch_hole);
 #endif
+
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
+    if (prevent_sleep)
+        disable_irq_wake(ts->client->irq);
+    else
+#endif
+    {
 	cancel_delayed_work_sync(&qt602240_data->work_autocalibration_disable);
 	if (qt602240_wq)
 		destroy_workqueue(qt602240_wq);
@@ -4066,12 +4092,20 @@ static int qt602240_remove(struct i2c_client *client)
 	off_hw_setting();
 	dbg_func_out();
 	return 0;
+   }
 }
 
 #if defined(CONFIG_PM) && defined(CONFIG_HAS_EARLYSUSPEND)
 static int qt602240_early_suspend(struct early_suspend *h)
 {
 	dbg_func_in();
+
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
+    if (prevent_sleep) {
+  enable_irq_wake(ts->client->irq);
+        release_all_ts_event(ts);
+  } else
+#endif
 
 	disable_irq(qt602240_data->client->irq);
 
@@ -4292,7 +4326,14 @@ static int __devinit qt602240_probe(struct i2c_client *client, const struct i2c_
 #endif
 
 	qt602240_data->client->irq = IRQ_TOUCH_INT;
-	rc = request_irq(qt602240_data->client->irq, qt602240_irq_handler, IRQF_TRIGGER_LOW, "qt602240-irq", qt602240_data);
+	rc = request_irq(qt602240_data->client->irq, qt602240_irq_handler,
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
+              ts->pdata->role->irqflags | IRQF_ONESHOT | IRQF_TRIGGER_LOW | IRQF_NO_SUSPEND,
+#else
+        ts->pdata->role->irqflags | IRQF_ONESHOT,
+#endif        
+        client->name, ts);
+
 	if (!rc)
 	{
 		dbg("request_irq : success.\n");
